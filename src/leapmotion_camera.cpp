@@ -20,7 +20,7 @@ namespace enc = sensor_msgs::image_encodings;
 
 static const char WINDOW[] = "Image window";
 
-#define DISPLAY 0
+#define DISPLAY 1
 
 #define VFRAME_WIDTH  640
 #define VFRAME_HEIGHT 120
@@ -41,14 +41,16 @@ class LeapPublisher
 {
   ros::NodeHandle nh_;
   image_transport::ImageTransport it_;
-  image_transport::Publisher image_pub_;
+  image_transport::Publisher left_image_pub_;
+  image_transport::Publisher right_image_pub_;
   ros::Rate r_;
   
 public:
   LeapPublisher()
     : it_(nh_), r_(100)
   {
-    image_pub_ = it_.advertise("out", 1);
+    left_image_pub_ = it_.advertise("left", 1);
+    right_image_pub_ = it_.advertise("right", 1);
 #if DISPLAY    
     cv::namedWindow(WINDOW);
 #endif    
@@ -66,11 +68,20 @@ public:
     int key;
     cv::Mat image(frame->frame);
 
-    cv_bridge::CvImage out_msg;
-    // out_msg.header = TODO
-    out_msg.encoding = sensor_msgs::image_encodings::BGR8;
-    out_msg.image = image;
-    image_pub_.publish(out_msg.toImageMsg());
+    cv::Mat channels[3];
+    cv::split(image, channels);
+
+    cv_bridge::CvImage left_out_msg;
+    // right_out_msg.header = TODO
+    left_out_msg.encoding = sensor_msgs::image_encodings::MONO8;
+    left_out_msg.image = channels[1];
+    left_image_pub_.publish(left_out_msg.toImageMsg());
+
+    cv_bridge::CvImage right_out_msg;
+    // right_out_msg.header = TODO
+    right_out_msg.encoding = sensor_msgs::image_encodings::MONO8;
+    right_out_msg.image = channels[2];
+    right_image_pub_.publish(right_out_msg.toImageMsg());
 #if DISPLAY
     cv::imshow(WINDOW, image);
 #endif    
