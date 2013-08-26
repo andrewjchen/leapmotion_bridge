@@ -44,6 +44,7 @@ class LeapPublisher
   image_transport::Publisher left_image_pub_;
   image_transport::Publisher right_image_pub_;
   ros::Rate r_;
+  int seq;
   
 public:
   LeapPublisher()
@@ -71,17 +72,26 @@ public:
     cv::Mat channels[3];
     cv::split(image, channels);
 
+    ros::Time now = ros::Time::now();
+
     cv_bridge::CvImage left_out_msg;
-    // right_out_msg.header = TODO
+    left_out_msg.header.seq = seq;
+    left_out_msg.header.stamp = now;
+    left_out_msg.header.frame_id = "left";
     left_out_msg.encoding = sensor_msgs::image_encodings::MONO8;
     left_out_msg.image = channels[1];
     left_image_pub_.publish(left_out_msg.toImageMsg());
 
     cv_bridge::CvImage right_out_msg;
     // right_out_msg.header = TODO
+    right_out_msg.header.seq = seq;
+    right_out_msg.header.stamp = now;
+    right_out_msg.header.frame_id = "right";
     right_out_msg.encoding = sensor_msgs::image_encodings::MONO8;
     right_out_msg.image = channels[2];
     right_image_pub_.publish(right_out_msg.toImageMsg());
+
+    seq++;
 #if DISPLAY
     cv::imshow(WINDOW, image);
 #endif    
