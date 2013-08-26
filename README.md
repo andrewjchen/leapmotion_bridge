@@ -1,4 +1,4 @@
-leapmotion_bridge
+leapmotion_camera
 =================
 
 A simple leapmotion stereo camera driver.

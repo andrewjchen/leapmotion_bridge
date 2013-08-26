@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(leapmotion_bridge)
+project(leapmotion_camera)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -52,7 +52,7 @@ find_package(OpenCV REQUIRED)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES leapmotion_bridge
+  LIBRARIES leapmotion_camera
   CATKIN_DEPENDS cv_bridge image_transport opencv2 roscpp sensor_msgs std_msgs
   DEPENDS system_lib
 )
@@ -69,19 +69,19 @@ include_directories(
 )
 
 ## Declare a cpp library
-# add_library(leapmotion_bridge
-#   src/${PROJECT_NAME}/leapmotion_bridge.cpp
+# add_library(leapmotion_camera
+#   src/${PROJECT_NAME}/leapmotion_camera.cpp
 # )
 
 ## Declare a cpp executable
-add_executable(leapmotion_bridge_node src/leap_bridge.cpp)
+add_executable(leapmotion_camera_node src/leapmotion_camera.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-add_dependencies(leapmotion_bridge_node leapmotion_bridge_generate_messages_cpp)
+add_dependencies(leapmotion_camera_node leapmotion_camera_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(leapmotion_bridge_node
+ target_link_libraries(leapmotion_camera_node
    ${catkin_LIBRARIES}
    ${OpenCV_LIBS}
  )
@@ -101,7 +101,7 @@ add_dependencies(leapmotion_bridge_node leapmotion_bridge_generate_messages_cpp)
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS leapmotion_bridge leapmotion_bridge_node
+# install(TARGETS leapmotion_camera leapmotion_camera_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -126,7 +126,7 @@ add_dependencies(leapmotion_bridge_node leapmotion_bridge_generate_messages_cpp)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_leapmotion_bridge.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_leapmotion_camera.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
